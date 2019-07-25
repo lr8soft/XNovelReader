@@ -32,28 +32,27 @@ public class ToolsButtonContent implements View.OnClickListener{
         }
         transaction.replace(R.id.homepage_detail_content, bookListContent);
         transaction.commit();
-        callbackClass.NowMode = callbackClass.BookListMode;
-
+        callbackClass.setMode(callbackClass.BookListMode);
     }
     private void onSearchButtonClick(){
         FragmentManager fragmentManager = callbackClass.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if(searchContent==null){
-            searchContent = new SearchContent();
+            searchContent = new SearchContent(callbackClass);
         }
         transaction.replace(R.id.homepage_detail_content, searchContent);
         transaction.commit();
-        callbackClass.NowMode = callbackClass.SearchMode;
+        callbackClass.setMode(callbackClass.SearchMode);
     }
     private void onSettingButtonClick(){
         FragmentManager fragmentManager = callbackClass.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if(settingContent==null){
-            settingContent = new SettingContent();
+            settingContent = new SettingContent(callbackClass);
         }
         transaction.replace(R.id.homepage_detail_content, settingContent);
         transaction.commit();
-        callbackClass.NowMode = callbackClass.SettingMode;
+        callbackClass.setMode(callbackClass.SettingMode);
     }
     @Override
     public void onClick(View view) {
