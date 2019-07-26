@@ -23,27 +23,34 @@ public class ArticleReader extends Thread{
     @Override
     public void run() {
         try{
-            Document doc = Jsoup.connect(chapterURL).get();
-            Elements articleInfo = doc.select("div[class=book reader] > div[class=content] > div[class=showtxt]");
-            String chapterInfo = "";
-            for(Element e:articleInfo){
-                String temp = e
-                        .html()
-                        .replace("&nbsp;"," ")
-                        .replace("<br>","\n");
-                if(!temp.equals("")){
-                    chapterInfo+= temp;
-                }
-            }
-            Message msg = mHandler.obtainMessage(0, chapterInfo);
-            msg.sendToTarget();
+            loadFromURL();
         }catch (Exception exp){
-            Log.e("run: ",exp.toString());
-            String errinfo = "章节加载失败！请尝试刷新页面！\n"+exp.getMessage();
-            Message msg = mHandler.obtainMessage(0, errinfo);
-            msg.sendToTarget();
+            try {
+                loadFromURL();//gabbage code 屑代码 都怪傻逼笔趣阁，第一次刷新还不行
+            }catch (Exception exp2){
+                Log.e("run: ",exp.toString());
+                String errinfo = "章节加载失败！请尝试刷新页面！\n"+exp.getMessage();
+                Message msg = mHandler.obtainMessage(0, errinfo);
+                msg.sendToTarget();
+            }
         }
 
+    }
+    private void loadFromURL() throws Exception{
+        Document doc = Jsoup.connect(chapterURL).get();
+        Elements articleInfo = doc.select("div[class=book reader] > div[class=content] > div[class=showtxt]");
+        String chapterInfo = "";
+        for(Element e:articleInfo){
+            String temp = e
+                    .html()
+                    .replace("&nbsp;"," ")
+                    .replace("<br>","\n");
+            if(!temp.equals("")){
+                chapterInfo+= temp;
+            }
+        }
+        Message msg = mHandler.obtainMessage(0, chapterInfo);
+        msg.sendToTarget();
     }
     private Handler mHandler = new Handler(){
         @Override

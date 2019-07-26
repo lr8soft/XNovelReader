@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.lrsoft.xnovelreader.HTMLAnalysis.ArticleReader;
@@ -23,7 +24,7 @@ public class ReaderActivity extends AppCompatActivity {
         String title = chapterInfo.getStringExtra("chapterName");
         String url = chapterInfo.getStringExtra("chapterURL");
         TextView titleView = findViewById(R.id.reader_chapterTitle);
-        TextView infoView = findViewById(R.id.reader_chapterInfo);
+        EditText infoView = findViewById(R.id.reader_chapterInfo);
         titleView.setText(title);
 
         ArticleReader reader = new ArticleReader(infoView,"https://www.biqiuge.com/"+url);

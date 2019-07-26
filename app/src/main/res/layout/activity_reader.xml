@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,16 +11,25 @@
         android:text="第x章 xxxx"
         android:textSize="20sp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:maxLines="1"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <TextView
+        />
+  <!--  <TextView
         android:id="@+id/reader_chapterInfo"
         android:text="加载中，请稍后..."
         android:textSize="22sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        app:layout_constraintHeight_max="wrap"
-        app:layout_constraintTop_toBottomOf="@id/reader_chapterTitle" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@id/reader_chapterTitle" />-->
+    <EditText
+        android:id="@+id/reader_chapterInfo"
+        android:text="加载中，请稍后..."
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textAllCaps="false"
+        android:focusable="false"
+        android:background="@drawable/default_boreder"/>
+</LinearLayout>
