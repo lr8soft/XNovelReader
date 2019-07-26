@@ -1,5 +1,6 @@
 package com.lrsoft.xnovelreader.HTMLAnalysis;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.lrsoft.xnovelreader.SearchItem.SearchItem;
@@ -42,7 +43,6 @@ public class NovelWebsites {
                 String getName = elementArticle.get(i).text();
                 String getURL  = elementArticle.get(i).attr("href").toString();
                 String author = elementAuthor.get(i).text();
-                Log.i("getSearchResult: ","Name:" + getName + " URL:" + getURL + " Author:" + author);
                 temp.bookAuthor = author;
                 temp.bookName = getName;
                 temp.bookChapterURL = getURL;
@@ -52,7 +52,6 @@ public class NovelWebsites {
         }catch (IOException exp){
             Log.i("getSearchResult: ",exp.getLocalizedMessage());
         }
-
         return list;
     }
 }

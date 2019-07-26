@@ -10,6 +10,7 @@ public class SearchItem {
     public Bitmap bookImage;
     /*https://www.biqiuge.com/*/
     /*www.23us.so*/
+    /*www.qiushuge.net*/
     public enum AnalysisType {
         biqiuge, dingdiann, dingdian23us
     };

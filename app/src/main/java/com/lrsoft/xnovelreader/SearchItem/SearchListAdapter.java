@@ -27,11 +27,12 @@ public class SearchListAdapter  extends ArrayAdapter<SearchItem> {
         TextView title = view.findViewById(R.id.searchItemTitle);
         TextView author = view.findViewById(R.id.searchItemAuthor);
         TextView source = view.findViewById(R.id.searchItemSource);
-        if(item.bookImage == null){
+        if(item.bookImage==null){
             image.setImageResource(R.drawable.default_book);
         }else{
             image.setImageBitmap(item.bookImage);
         }
+
         title.setText(item.bookName);
         author.setText(item.bookAuthor);
         source.setText(item.bookChapterURL);

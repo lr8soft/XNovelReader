@@ -57,10 +57,6 @@ public class MainActivity extends AppCompatActivity{
         btnSearch.setOnClickListener(new ToolsButtonContent(this));
         btnSetting.setOnClickListener(new ToolsButtonContent(this));
 
-        BookItem item = new BookItem("时间简史","史帝芬·霍金");
-        bookadapter.add(item);
-        BookItem item2 = new BookItem("克苏鲁神话","霍华德·菲利普斯·洛夫克拉夫特");
-        bookadapter.add(item2);
     }
 
     public int getMode(){

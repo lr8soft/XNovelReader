@@ -4,10 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import androidx.annotation.NonNull;
-
 import com.lrsoft.xnovelreader.SearchItem.SearchItem;
 
 import java.util.List;
