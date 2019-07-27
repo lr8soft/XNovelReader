@@ -8,6 +8,9 @@ public class BookItem {
     private String bookChapterURL = "";
     private boolean bookDownload = false;
     private String bookLocalizationName = "";
+    private String lastChapterName = "";
+    private String lastChapterURL = "";
+    private String lastRefreshTime = "";
     public BookItem(){
         bitmap = null;
     }
@@ -39,6 +42,15 @@ public class BookItem {
     public String getBookLocalizationName(){
         return bookLocalizationName;
     }
+    public String getLastChapterName(){
+        return lastChapterName;
+    }
+    public String getLastChapterURL(){
+        return  lastChapterURL;
+    }
+    public String getLastRefreshTime(){
+        return  lastRefreshTime;
+    }
     public void setBitmap(Bitmap bp){
         bitmap = bp;
     }
@@ -56,5 +68,14 @@ public class BookItem {
     }
     public void setBookChapterURL(String url){
         bookChapterURL = url;
+    }
+    public void setLastChapterName(String name){
+        lastChapterName = name;
+    }
+    public void setLastChapterURL(String url){
+        lastChapterURL = url;
+    }
+    public void setLastRefreshTime(String time){
+        lastRefreshTime = time;
     }
 }
