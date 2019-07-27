@@ -1,7 +1,6 @@
-package com.lrsoft.xnovelreader.ExchangeContent;
+package com.lrsoft.xnovelreader.TransmissionMiddleware;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.lrsoft.xnovelreader.BookItem.BookItem;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.BookItem;
 import com.lrsoft.xnovelreader.R;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class BookListAdapter extends ArrayAdapter<BookItem> {
             image.setImageBitmap(item.getBitmap());
         }
         title.setText(item.getBookName());
-        author.setText(item.getAuthorName());
+        author.setText(item.getBookAuthor());
         return view;
     }
 }

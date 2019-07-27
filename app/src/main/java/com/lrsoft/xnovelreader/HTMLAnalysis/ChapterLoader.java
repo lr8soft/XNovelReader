@@ -3,20 +3,16 @@ package com.lrsoft.xnovelreader.HTMLAnalysis;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import com.lrsoft.xnovelreader.ChapterDetail.ChapterListAdapter;
-import com.lrsoft.xnovelreader.ChapterDetail.ChapterListItem;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListAdapter;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.util.logging.LogRecord;
 
 public class ChapterLoader extends Thread {
     private ChapterListAdapter callBackAdapter;

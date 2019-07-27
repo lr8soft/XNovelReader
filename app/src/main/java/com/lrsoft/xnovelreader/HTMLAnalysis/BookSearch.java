@@ -1,30 +1,25 @@
 package com.lrsoft.xnovelreader.HTMLAnalysis;
 
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
-import com.lrsoft.xnovelreader.R;
-import com.lrsoft.xnovelreader.SearchItem.SearchItem;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.BookItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookSearch extends Thread{
     private final String biqugeSearch = "https://so.biqusoso.com/s.php?ie=utf-8&siteid=biqiuge.com&q=%s";
     private final String biqugeMethod = "div[id=wrapper] > div[id=search-main] > div[class=search-list] > ul > li";
-    private ArrayAdapter<SearchItem> updateAdapter;
+    private ArrayAdapter<BookItem> updateAdapter;
     private String bookName;
-    public BookSearch(ArrayAdapter<SearchItem> adapter,String searchName){
+    public BookSearch(ArrayAdapter<BookItem> adapter, String searchName){
         updateAdapter = adapter;
         bookName = searchName;
     }
@@ -43,31 +38,29 @@ public class BookSearch extends Thread{
             Message preMsg = mHandler.obtainMessage(-1);
             preMsg.sendToTarget();
             for(int i=0; i<elementArticle.size(); i++){
-                SearchItem temp = new SearchItem();
+                BookItem temp = new BookItem();
                 String getName = elementArticle.get(i).text();
                 String getURL  = elementArticle.get(i).attr("href").toString();
                 String author = elementAuthor.get(i).text();
-                temp.bookAuthor = author;
-                temp.bookName = getName;
-                temp.bookChapterURL = getURL;
-                temp.HTMLAnalysisType = SearchItem.AnalysisType.biqiuge;
-
+                temp.setBookAuthor(author);
+                temp.setBookName(getName);
+                temp.setBookChapterURL(getURL);
                 Message msg = mHandler.obtainMessage(1, temp);
                 msg.sendToTarget();
             }
             if(elementArticle.size()==0){
-                SearchItem errorContainer = new SearchItem();
-                errorContainer.bookName="没有搜索到结果！";
-                errorContainer.bookAuthor = "N/A";
-                errorContainer.bookChapterURL="";
+                BookItem errorContainer = new BookItem();
+                errorContainer.setBookAuthor("N/A");
+                errorContainer.setBookName("没有搜索到结果！");
+                errorContainer.setBookChapterURL("");
                 Message msg = mHandler.obtainMessage(1, errorContainer);
                 msg.sendToTarget();
             }
         }catch (IOException exp){
-            SearchItem errorContainer = new SearchItem();
-            errorContainer.bookName="加载时发生错误！";
-            errorContainer.bookAuthor = exp.getLocalizedMessage();
-            errorContainer.bookChapterURL="";
+            BookItem errorContainer = new BookItem();
+            errorContainer.setBookAuthor(exp.getLocalizedMessage());
+            errorContainer.setBookName("加载时发生错误！");
+            errorContainer.setBookChapterURL("");
         }
     }
     private Handler mHandler = new Handler(){
@@ -75,7 +68,7 @@ public class BookSearch extends Thread{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
-                    List<SearchItem> list = (List<SearchItem>)msg.obj;
+                    List<BookItem> list = (List<BookItem>)msg.obj;
                     updateAdapter.clear();
                     for(int i=0; i<list.size(); i++){
                         updateAdapter.add(list.get(i));
@@ -86,7 +79,7 @@ public class BookSearch extends Thread{
                     updateAdapter.clear();
                     break;
                 case 1:
-                    SearchItem item = (SearchItem)msg.obj;
+                    BookItem item = (BookItem)msg.obj;
                     updateAdapter.add(item);
                     updateAdapter.notifyDataSetChanged();
                     break;

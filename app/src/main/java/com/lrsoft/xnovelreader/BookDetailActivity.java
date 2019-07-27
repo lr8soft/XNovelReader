@@ -14,15 +14,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lrsoft.xnovelreader.ChapterDetail.ChapterListAdapter;
-import com.lrsoft.xnovelreader.ChapterDetail.ChapterListItem;
+import com.lrsoft.xnovelreader.StorageManager.StorageManager;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.BookItem;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListAdapter;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 import com.lrsoft.xnovelreader.HTMLAnalysis.ChapterLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDetailDialog extends AppCompatActivity {
-    private String bookChapterURL;
+public class BookDetailActivity extends AppCompatActivity {
+    private String bookChapterURL,title,author;
     public ChapterListAdapter chapterListAdapter = null;
     public List<ChapterListItem> storageChapterlist = new ArrayList<>();
     private AlertDialog.Builder dialog;
@@ -34,15 +36,15 @@ public class BookDetailDialog extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         if(chapterListAdapter==null){
-            chapterListAdapter = new ChapterListAdapter(BookDetailDialog.this,R.layout.chapter_item, storageChapterlist);
+            chapterListAdapter = new ChapterListAdapter(BookDetailActivity.this,R.layout.chapter_item, storageChapterlist);
         }
-        dialog = new AlertDialog.Builder(BookDetailDialog.this);
+        dialog = new AlertDialog.Builder(BookDetailActivity.this);
         onLayoutInit();
     }
     private void onLayoutInit(){
         Intent receiveInfo = getIntent();
-        String title = receiveInfo.getStringExtra("bookTitle");
-        String author = receiveInfo.getStringExtra("bookAuthor");
+        title = receiveInfo.getStringExtra("bookTitle");
+        author = receiveInfo.getStringExtra("bookAuthor");
         bookChapterURL = receiveInfo.getStringExtra("bookChapterURL");
         Bitmap bitmep = receiveInfo.getParcelableExtra("bookImage");
         TextView authorView = findViewById(R.id.detail_dialog_bookAuthor);
@@ -63,7 +65,7 @@ public class BookDetailDialog extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ChapterListItem info = storageChapterlist.get(i);
-                Intent intent = new Intent(BookDetailDialog.this, ReaderActivity.class);
+                Intent intent = new Intent(BookDetailActivity.this, ReaderActivity.class);
                 intent.putExtra("chapterName", info.chapterName);
                 intent.putExtra("chapterURL",info.chapterURL);
                 startActivity(intent);
@@ -80,7 +82,22 @@ public class BookDetailDialog extends AppCompatActivity {
             public void onClick(View view) {
                 ChapterLoader chapterLoader = new ChapterLoader(chapterListAdapter,bookChapterURL,dialog);
                 chapterLoader.start();
-                Toast.makeText(BookDetailDialog.this,"章节加载中，请稍后...",Toast.LENGTH_LONG).show();
+                Toast.makeText(BookDetailActivity.this,"章节加载中，请稍后...",Toast.LENGTH_LONG).show();
+            }
+        });
+        btnAddToShelf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StorageManager storageManager = new StorageManager(getApplication());
+                BookItem temp = new BookItem();
+                temp.setBookName(title);
+                temp.setBookAuthor(author);
+                temp.setBookChapterURL(bookChapterURL);
+                if(storageManager.addBookToList(temp)){
+                    Toast.makeText(BookDetailActivity.this,"已添加到我的书架！",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(BookDetailActivity.this,"无法添加到我的书架！",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.lrsoft.xnovelreader.ChapterDetail;
+package com.lrsoft.xnovelreader.TransmissionMiddleware;
 
 public class ChapterListItem {
     public String chapterName;

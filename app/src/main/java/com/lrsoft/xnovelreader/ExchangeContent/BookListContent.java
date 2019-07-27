@@ -1,23 +1,21 @@
 package com.lrsoft.xnovelreader.ExchangeContent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.lrsoft.xnovelreader.BookItem.BookItem;
+import com.lrsoft.xnovelreader.BookDetailActivity;
 import com.lrsoft.xnovelreader.MainActivity;
 import com.lrsoft.xnovelreader.R;
-import com.lrsoft.xnovelreader.ToolsButtonContent;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.lrsoft.xnovelreader.ReaderActivity;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.BookItem;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 
 public class BookListContent extends Fragment {
     @Override
@@ -25,7 +23,18 @@ public class BookListContent extends Fragment {
         View view = inflater.inflate(R.layout.exchange_booklist_content, container, false);
         ListView bookList = view.findViewById(R.id.exchange_booklist_content_favlist);
         bookList.setAdapter(MainActivity.bookadapter);
-
+        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                BookItem info = MainActivity.bookadapter.getItem(i);
+                Intent intent = new Intent(getActivity(), BookDetailActivity.class);
+                intent.putExtra("bookTitle", info.getBookName());
+                intent.putExtra("bookAuthor", info.getBookAuthor());
+                intent.putExtra("bookChapterURL", info.getBookChapterURL());
+                intent.putExtra("bookImage", info.getBitmap());
+                startActivity(intent);
+            }
+        } );
         return  view;
     }
 }
