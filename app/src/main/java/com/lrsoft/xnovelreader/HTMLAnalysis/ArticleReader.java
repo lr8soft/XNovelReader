@@ -7,12 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.w3c.dom.Text;
-
+import com.lrsoft.xnovelreader.HTMLAnalysis.SourceAnalysis.SourceAnalysis;
 public class ArticleReader extends Thread{
     private String chapterURL;
     private TextView callbackTV;
@@ -22,35 +17,24 @@ public class ArticleReader extends Thread{
     }
     @Override
     public void run() {
+        SourceAnalysis source = new SourceAnalysis();
         try{
-            loadFromURL();
-        }catch (Exception exp){
-            try {
-                loadFromURL();//gabbage code 屑代码 都怪傻逼笔趣阁，第一次刷新还不行
-            }catch (Exception exp2){
-                Log.e("run: ",exp.toString());
-                String errinfo = "章节加载失败！请尝试刷新页面！\n"+exp.getMessage();
-                Message msg = mHandler.obtainMessage(0, errinfo);
+            String info = null;
+            if(chapterURL.contains("biqiuge")){
+                info = source.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Biquge);
+                Message msg = mHandler.obtainMessage(0, info);
+                msg.sendToTarget();
+            }else  if(chapterURL.contains("dingdiann")){
+                info = source.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Dingdiann);
+                Message msg = mHandler.obtainMessage(0, info);
                 msg.sendToTarget();
             }
+        }catch (Exception exp){
+            Log.e("run: ",exp.toString());
+            String errinfo = "章节加载失败！请尝试刷新页面！\n"+exp.getMessage();
+            Message msg = mHandler.obtainMessage(0, errinfo);
+            msg.sendToTarget();
         }
-
-    }
-    private void loadFromURL() throws Exception{
-        Document doc = Jsoup.connect(chapterURL).get();
-        Elements articleInfo = doc.select("div[class=book reader] > div[class=content] > div[class=showtxt]");
-        String chapterInfo = "";
-        for(Element e:articleInfo){
-            String temp = e
-                    .html()
-                    .replace("&nbsp;"," ")
-                    .replace("<br>","\n");
-            if(!temp.equals("")){
-                chapterInfo+= temp;
-            }
-        }
-        Message msg = mHandler.obtainMessage(0, chapterInfo);
-        msg.sendToTarget();
     }
     private Handler mHandler = new Handler(){
         @Override

@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookDetailDialog">
+    tools:context=".BookDetailActivity">
     <LinearLayout
         android:id="@+id/detail_dialog_titlePlane"
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:id="@+id/detail_dialog_bookAuthor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="TestAuthor TestAuthor TestAuthor"
+                android:text="TestAuthor TestAuthor TestAuthor TestAuthor"
                 android:textSize="22sp"
                 android:maxLines="1"
                 app:layout_constraintLeft_toRightOf="@id/detail_dialog_bookImage"
@@ -68,17 +68,27 @@
                 android:id="@+id/detail_dialog_addBookBtn"
                 android:text="添加到书架"
                 android:layout_width="0dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/detail_dialog_bookAuthor"
                 app:layout_constraintBottom_toTopOf="@id/detail_dialog_bookRefresh"
                 app:layout_constraintLeft_toRightOf="@id/detail_dialog_bookImage"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toLeftOf="@id/detail_dialog_continueRead"/>
+            <Button
+                android:id="@+id/detail_dialog_continueRead"
+                android:text="继续阅读"
+                android:textSize="18sp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/detail_dialog_bookAuthor"
+                app:layout_constraintLeft_toRightOf="@id/detail_dialog_addBookBtn"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/detail_dialog_bookDownload"/>
             <Button
                 android:id="@+id/detail_dialog_bookRefresh"
                 android:text="刷新章节"
                 android:layout_width="0dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/detail_dialog_addBookBtn"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -88,7 +98,7 @@
                 android:id="@+id/detail_dialog_bookDownload"
                 android:text="下载"
                 android:layout_width="0dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/detail_dialog_addBookBtn"
                 app:layout_constraintBottom_toBottomOf="parent"

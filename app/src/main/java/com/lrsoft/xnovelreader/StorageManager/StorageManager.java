@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.lrsoft.xnovelreader.TransmissionMiddleware.BookItem;
+import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,12 +42,16 @@ public class StorageManager {
                     String bookAuthor = temp.optString("bookAuthor");
                     String bookChapterURL = temp.optString("bookChapterURL");
                     String bookLocalizationName = temp.optString("bookLocalizationName");
+                    String bookLastRead = temp.optString("bookLastRead");
+                    String bookLastReadName = temp.optString("bookLastReadName");
                     boolean bookDownload = temp.optBoolean("bookDownload");
                     tempBook.setBookAuthor(bookAuthor);
                     tempBook.setBookChapterURL(bookChapterURL);
                     tempBook.setBookName(bookName);
                     tempBook.setBookDownload(bookDownload);
                     tempBook.setBookLocalizationName(bookLocalizationName);
+                    tempBook.setLastChapterURL(bookLastRead);
+                    tempBook.setLastChapterName(bookLastReadName);
                     list.add(tempBook);
                 }catch (JSONException exp){
                     continue;
@@ -65,6 +70,8 @@ public class StorageManager {
                     object.put("bookChapterURL",bookItem.getBookChapterURL());
                     object.put("bookDownload",bookItem.getBookDownload());
                     object.put("bookLocalizationName",bookItem.getBookLocalizationName());
+                    object.put("bookLastRead", bookItem.getLastChapterURL());
+                    object.put("bookLastReadName",bookItem.getLastChapterName());
                     bookArray.put(bookArray.length(),object);
                     if(saveDataChange())
                         return true;
@@ -77,6 +84,54 @@ public class StorageManager {
                 return false;
             }
         }else {
+            return false;
+        }
+    }
+    public ChapterListItem getChapterLastReadByURL(String bookAllChapterUrl){
+        ChapterListItem lastRead = null;
+        if(bookArray!=null){
+            for(int i=0; i<bookArray.length(); i++){
+                try{
+                    JSONObject temp = bookArray.getJSONObject(i);
+                    String tempURL = temp.optString("bookChapterURL");
+                    String tempLastChapter = temp.optString("bookLastRead");
+                    String tempLastChapterName = temp.optString("bookLastReadName");
+                    if(tempURL.equals(bookAllChapterUrl)){
+                        lastRead = new ChapterListItem();
+                        lastRead.chapterName = tempLastChapterName;
+                        lastRead.chapterURL = tempLastChapter;
+                    }
+                }catch (JSONException exp){
+                    continue;
+                }
+            }
+        }
+        return lastRead;
+    }
+    public boolean setChapterLastRead(String bookAllChapterUrl, String nowChapterURL, String nowChapterName){
+        if(bookArray!=null){
+            for(int i=0; i<bookArray.length(); i++){
+                try{
+                    JSONObject temp = bookArray.getJSONObject(i);
+                    String tempName = temp.optString("bookName");
+                    String tempURL = temp.optString("bookChapterURL");
+                    String tempLastChapter = temp.optString("bookLastRead");
+                    if(tempURL.equals(bookAllChapterUrl)){
+                        temp.put("bookLastRead", nowChapterURL);
+                        temp.put("bookLastReadName", nowChapterName);
+                        if(saveDataChange()){
+                            return true;
+                        }
+                        else
+                            return false;
+                    }
+                }catch (JSONException exp){
+                    Log.i("setChapterLastRead: ", exp.getLocalizedMessage());
+                    continue;
+                }
+            }
+            return false;
+        }else{
             return false;
         }
     }

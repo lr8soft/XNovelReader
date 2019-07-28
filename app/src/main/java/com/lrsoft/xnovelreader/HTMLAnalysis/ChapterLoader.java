@@ -6,49 +6,76 @@ import android.os.Message;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.lrsoft.xnovelreader.HTMLAnalysis.SourceAnalysis.SourceAnalysis;
 import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListAdapter;
 import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChapterLoader extends Thread {
     private ChapterListAdapter callBackAdapter;
     private String chapterURL;
     private AlertDialog.Builder pdialog;
+    private static List<ChapterListItem> chapterList = null;
     public ChapterLoader(ChapterListAdapter adapter, String url, AlertDialog.Builder dialog){
         callBackAdapter = adapter;
         chapterURL = url;
         pdialog = dialog;
+        chapterList = new ArrayList<>();
     }
     @Override
     public void run() {
         Looper.prepare();
-        try{
-            Document doc = Jsoup.connect(chapterURL).get();
-            Elements elements = doc.select("div[class=listmain] > dl > dd");
-            int i=0;
-            if(!elements.isEmpty()){
-                Message msg = mHandler.obtainMessage(2);
-                msg.sendToTarget();
+        SourceAnalysis source = new SourceAnalysis();
+            try {
+                List<ChapterListItem> list  = AnalysisChapters(source);
+                if(list!=null){
+                    for(int i=0; i<list.size(); i++){
+                        chapterList.add(list.get(i));
+                        Message msg = mHandler.obtainMessage(0 ,list.get(i));
+                        msg.sendToTarget();
+                    }
+                }
+            }catch (Exception exp){
+                Message msgExp = mHandler.obtainMessage(1, exp.getMessage());
+                msgExp.sendToTarget();
             }
-            for(Element e:elements){
-                String chapterURL = e.select("a").attr("href").toString();
-                String chapterName = e.select("a").text();
-                ChapterListItem temp = new ChapterListItem();
-                temp.chapterID = i;
-                temp.chapterName = chapterName;
-                temp.chapterURL = chapterURL;
-                Message msg = mHandler.obtainMessage(0 ,temp);
-                msg.sendToTarget();
-                i++;
-            }
-        }catch (Exception exp){
-            Message msgExp = mHandler.obtainMessage(1, exp.getMessage());
-            msgExp.sendToTarget();
+    }
+    private List<ChapterListItem> AnalysisChapters(SourceAnalysis source) throws Exception{
+        List<ChapterListItem> list = null;
+        if(chapterURL.contains("biqiuge")){
+            list = source.getChapterListFromSource(chapterURL,SourceAnalysis.WebSiteSource.Biquge);
+        }else if(chapterURL.contains("dingdiann")){
+            list = source.getChapterListFromSource(chapterURL,SourceAnalysis.WebSiteSource.Dingdiann);
         }
+        return list;
+    }
+    public static ChapterListItem getNextChapter(String nowChapter){
+        if(chapterList!=null){
+            for(int i=0; i<chapterList.size(); i++){
+                ChapterListItem temp = chapterList.get(i);
+                if(temp.chapterURL.equals(nowChapter)){
+                    if(i + 1<chapterList.size()){//isn't the last chapter
+                        return chapterList.get(i + 1);
+                    }
+                }
+            }
+        }
+        return  null;
+    }
+    public static ChapterListItem getPreviousChapter(String nowChapter){
+        if(chapterList!=null){
+            for(int i=0; i<chapterList.size(); i++){
+                ChapterListItem temp = chapterList.get(i);
+                if(temp.chapterURL.equals(nowChapter)){
+                    if(i - 1 >=0){//isn't the first chapter
+                        return chapterList.get(i - 1);
+                    }
+                }
+            }
+        }
+        return  null;
     }
     private Handler mHandler = new Handler(){
         @Override

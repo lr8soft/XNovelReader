@@ -26,6 +26,7 @@ public class BookListAdapter extends ArrayAdapter<BookItem> {
         ImageView image = view.findViewById(R.id.bookImage);
         TextView title = view.findViewById(R.id.bookTitle);
         TextView author = view.findViewById(R.id.bookAuthor);
+        TextView lastRead = view.findViewById(R.id.bookHavedRead);
         if(item.getBitmap()==null){
             image.setImageResource(R.drawable.default_book);
         }else{
@@ -33,6 +34,11 @@ public class BookListAdapter extends ArrayAdapter<BookItem> {
         }
         title.setText(item.getBookName());
         author.setText(item.getBookAuthor());
+        if(item.getLastChapterName().equals("")){
+            lastRead.setText("仍未读过");
+        }else{
+            lastRead.setText(item.getLastChapterName());
+        }
         return view;
     }
 }

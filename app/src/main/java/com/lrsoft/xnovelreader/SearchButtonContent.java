@@ -18,10 +18,14 @@ public class SearchButtonContent implements View.OnClickListener{
     public void onClick(View view){
         TextView input = callbackObj.findViewById(R.id.searchpage_searchTextbox);
         ListView searchList = callbackObj.findViewById(R.id.searchpage_searchShowList);
-        String bookName = input.getText().toString();
-        if(!bookName.equals("")){
-            BookSearch search = new BookSearch(callbackObj.searchListAdapter,bookName);
-            search.start();
+        if(input!=null){
+            String bookName = input.getText().toString();
+            if(!bookName.equals("")){
+                BookSearch search = new BookSearch(callbackObj.searchListAdapter,bookName);
+                search.start();
+            }
+        }else{
+            Toast.makeText(callbackObj.getApplication(),"加载控件异常，可能是正在搜索中，请重试！",Toast.LENGTH_SHORT).show();
         }
     }
 }

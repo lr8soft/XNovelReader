@@ -68,6 +68,7 @@ public class BookDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(BookDetailActivity.this, ReaderActivity.class);
                 intent.putExtra("chapterName", info.chapterName);
                 intent.putExtra("chapterURL",info.chapterURL);
+                intent.putExtra("bookURL",bookChapterURL);
                 startActivity(intent);
             }
         });
@@ -77,6 +78,7 @@ public class BookDetailActivity extends AppCompatActivity {
         Button btnAddToShelf = findViewById(R.id.detail_dialog_addBookBtn);
         Button btnRefresh = findViewById(R.id.detail_dialog_bookRefresh);
         Button btnDownload = findViewById(R.id.detail_dialog_bookDownload);
+        Button btnContinue = findViewById(R.id.detail_dialog_continueRead);
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +100,20 @@ public class BookDetailActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(BookDetailActivity.this,"无法添加到我的书架！",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        btnContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StorageManager storageManager = new StorageManager(getApplication());
+                ChapterListItem lastChapterInfo = storageManager.getChapterLastReadByURL(bookChapterURL);
+                String chapterTitle = lastChapterInfo.chapterName;
+                String chapterURL = lastChapterInfo.chapterURL;
+                Intent intent = new Intent(BookDetailActivity.this, ReaderActivity.class);
+                intent.putExtra("chapterName", chapterTitle);
+                intent.putExtra("chapterURL",chapterURL);
+                intent.putExtra("bookURL",bookChapterURL);
+                startActivity(intent);
             }
         });
     }
