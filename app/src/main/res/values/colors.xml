@@ -6,4 +6,6 @@
 
     <color name="background_holo_deep_dark">#00648A</color>
     <color name="background_holo_light">#ff33b5e5</color>
+
+    <color name="background_night_dark">#ff000000</color>
 </resources>

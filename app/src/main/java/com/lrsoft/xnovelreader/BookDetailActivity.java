@@ -21,6 +21,8 @@ import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 import com.lrsoft.xnovelreader.HTMLAnalysis.ChapterLoader;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class BookDetailActivity extends AppCompatActivity {
@@ -85,6 +87,11 @@ public class BookDetailActivity extends AppCompatActivity {
                 ChapterLoader chapterLoader = new ChapterLoader(chapterListAdapter,bookChapterURL,dialog);
                 chapterLoader.start();
                 Toast.makeText(BookDetailActivity.this,"章节加载中，请稍后...",Toast.LENGTH_LONG).show();
+                StorageManager storageManager = new StorageManager(getApplication());
+                Calendar calendar = Calendar.getInstance();
+                String updateTime = "上次刷新: " + calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DAY_OF_MONTH) + " "
+                        + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
+                storageManager.setLastUpdateTime(bookChapterURL,updateTime );
             }
         });
         btnAddToShelf.setOnClickListener(new View.OnClickListener() {

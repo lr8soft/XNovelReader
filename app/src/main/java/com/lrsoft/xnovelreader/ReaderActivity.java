@@ -3,12 +3,14 @@ package com.lrsoft.xnovelreader;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 import org.w3c.dom.Text;
 
 public class ReaderActivity extends AppCompatActivity {
+    public static AppDefaultSetting appDefaultSetting = null;
     private GestureDetector gestureDetector = new GestureDetector(getApplication(), new ReaderGesture());
     public static String nowChapterURL = null;
     public static ReaderActivity tempThis = null;
@@ -33,6 +36,7 @@ public class ReaderActivity extends AppCompatActivity {
         if(getSupportActionBar()!=null){
             getSupportActionBar().hide();
         }
+        appDefaultSetting = new AppDefaultSetting(getApplication());
     }
 
     @Override
@@ -56,10 +60,21 @@ public class ReaderActivity extends AppCompatActivity {
             }
         });
         reader.start();
+        if(appDefaultSetting.getUseNightMode()){
+            infoView.setBackgroundColor(Color.parseColor("#ff000000"));
+            infoView.setTextColor(Color.parseColor("#606060"));
+            titleView.setBackgroundColor(Color.parseColor("#ff000000"));
+            titleView.setTextColor(Color.parseColor("#606060"));
+            ReaderActivity.this.setTheme(R.style.AppThemeDark);
+            try{
+                //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                getWindow().setStatusBarColor(Color.parseColor("#ff000000"));
+            }catch (Exception expt){}
+        }
     }
 }
 class ReaderGesture extends GestureDetector.SimpleOnGestureListener {
-    private static final int FLING_MIN_DISTANCE = 400;// 移动最小距离
+
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         return super.onSingleTapUp(e);
@@ -75,6 +90,7 @@ class ReaderGesture extends GestureDetector.SimpleOnGestureListener {
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                            float velocityY) {
         //turn right
+        int FLING_MIN_DISTANCE = ReaderActivity.appDefaultSetting.getSlipDistance();
         if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE){
             Log.i("onFling: ", "right");
             ChapterListItem lastChapterInfo = ChapterLoader.getNextChapter(ReaderActivity.nowChapterURL);

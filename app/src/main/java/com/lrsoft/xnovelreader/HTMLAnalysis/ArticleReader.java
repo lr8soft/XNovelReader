@@ -19,22 +19,24 @@ public class ArticleReader extends Thread{
     public void run() {
         SourceAnalysis source = new SourceAnalysis();
         try{
-            String info = null;
-            if(chapterURL.contains("biqiuge")){
-                info = source.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Biquge);
-                Message msg = mHandler.obtainMessage(0, info);
-                msg.sendToTarget();
-            }else  if(chapterURL.contains("dingdiann")){
-                info = source.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Dingdiann);
-                Message msg = mHandler.obtainMessage(0, info);
-                msg.sendToTarget();
-            }
+            String info = getArticleFromSoucrce(chapterURL,source);
+            Message msg = mHandler.obtainMessage(0, info);
+            msg.sendToTarget();
         }catch (Exception exp){
             Log.e("run: ",exp.toString());
             String errinfo = "章节加载失败！请尝试刷新页面！\n"+exp.getMessage();
             Message msg = mHandler.obtainMessage(0, errinfo);
             msg.sendToTarget();
         }
+    }
+    public static String getArticleFromSoucrce(String chapterURL,SourceAnalysis sourceAnalysis) throws Exception{
+        String info = null;
+        if(chapterURL.contains("biqiuge")){
+            info = sourceAnalysis.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Biquge);
+        }else  if(chapterURL.contains("dingdiann")){
+            info = sourceAnalysis.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Dingdiann);
+        }
+        return info;
     }
     private Handler mHandler = new Handler(){
         @Override

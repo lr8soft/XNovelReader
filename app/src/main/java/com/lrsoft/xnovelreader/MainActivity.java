@@ -2,14 +2,20 @@ package com.lrsoft.xnovelreader;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.lrsoft.xnovelreader.StorageManager.StorageManager;
 import com.lrsoft.xnovelreader.TransmissionMiddleware.BookItem;
 import com.lrsoft.xnovelreader.TransmissionMiddleware.BookListAdapter;
 import com.lrsoft.xnovelreader.TransmissionMiddleware.SearchListAdapter;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,9 +29,11 @@ public class MainActivity extends AppCompatActivity{
     public static BookListAdapter bookadapter = null;
     public static SearchListAdapter searchListAdapter = null;
     private int NowMode = BookListMode;
+    private AppDefaultSetting appDefaultSetting;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appDefaultSetting = new AppDefaultSetting(getApplication());
         setContentView(R.layout.activity_main);
         if(getSupportActionBar()!=null){
             getSupportActionBar().hide();
@@ -55,6 +63,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onStart() {
         super.onStart();
+        appDefaultSetting.updateConfig();
         StorageManager storageManager = new StorageManager(getApplication());
         List<BookItem> ret = storageManager.getAllBook();
         if(!ret.isEmpty()){
@@ -69,5 +78,9 @@ public class MainActivity extends AppCompatActivity{
     }
     public void setMode(int mode){
         NowMode = mode;
+    }
+    public void setTitle(String t){
+        TextView title = findViewById(R.id.homepage_title_titleTextView);
+        title.setText(t);
     }
 }

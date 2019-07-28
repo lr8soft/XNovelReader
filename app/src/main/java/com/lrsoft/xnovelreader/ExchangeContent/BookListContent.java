@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
+import com.lrsoft.xnovelreader.AppDefaultSetting;
 import com.lrsoft.xnovelreader.BookDetailActivity;
 import com.lrsoft.xnovelreader.MainActivity;
 import com.lrsoft.xnovelreader.R;
@@ -18,6 +19,7 @@ import com.lrsoft.xnovelreader.TransmissionMiddleware.BookItem;
 import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 
 public class BookListContent extends Fragment {
+    private AppDefaultSetting appDefaultSetting;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.exchange_booklist_content, container, false);
@@ -36,5 +38,11 @@ public class BookListContent extends Fragment {
             }
         } );
         return  view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 }

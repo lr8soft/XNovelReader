@@ -33,6 +33,7 @@ public class ToolsButtonContent implements View.OnClickListener{
         transaction.replace(R.id.homepage_detail_content, bookListContent);
         transaction.commit();
         callbackClass.setMode(callbackClass.BookListMode);
+        callbackClass.setTitle("我的书架");
     }
     private void onSearchButtonClick(){
         FragmentManager fragmentManager = callbackClass.getSupportFragmentManager();
@@ -43,6 +44,7 @@ public class ToolsButtonContent implements View.OnClickListener{
         transaction.replace(R.id.homepage_detail_content, searchContent);
         transaction.commit();
         callbackClass.setMode(callbackClass.SearchMode);
+        callbackClass.setTitle("搜索书籍");
     }
     private void onSettingButtonClick(){
         FragmentManager fragmentManager = callbackClass.getSupportFragmentManager();
@@ -53,6 +55,7 @@ public class ToolsButtonContent implements View.OnClickListener{
         transaction.replace(R.id.homepage_detail_content, settingContent);
         transaction.commit();
         callbackClass.setMode(callbackClass.SettingMode);
+        callbackClass.setTitle("应用设置");
     }
     @Override
     public void onClick(View view) {

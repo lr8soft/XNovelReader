@@ -44,6 +44,7 @@ public class StorageManager {
                     String bookLocalizationName = temp.optString("bookLocalizationName");
                     String bookLastRead = temp.optString("bookLastRead");
                     String bookLastReadName = temp.optString("bookLastReadName");
+                    String bookLastUpdateTime = temp.optString("bookLastUpdateTime");
                     boolean bookDownload = temp.optBoolean("bookDownload");
                     tempBook.setBookAuthor(bookAuthor);
                     tempBook.setBookChapterURL(bookChapterURL);
@@ -52,6 +53,7 @@ public class StorageManager {
                     tempBook.setBookLocalizationName(bookLocalizationName);
                     tempBook.setLastChapterURL(bookLastRead);
                     tempBook.setLastChapterName(bookLastReadName);
+                    tempBook.setLastRefreshTime(bookLastUpdateTime);
                     list.add(tempBook);
                 }catch (JSONException exp){
                     continue;
@@ -72,6 +74,7 @@ public class StorageManager {
                     object.put("bookLocalizationName",bookItem.getBookLocalizationName());
                     object.put("bookLastRead", bookItem.getLastChapterURL());
                     object.put("bookLastReadName",bookItem.getLastChapterName());
+                    object.put("bookLastUpdateTime",bookItem.getLastRefreshTime());
                     bookArray.put(bookArray.length(),object);
                     if(saveDataChange())
                         return true;
@@ -127,6 +130,30 @@ public class StorageManager {
                     }
                 }catch (JSONException exp){
                     Log.i("setChapterLastRead: ", exp.getLocalizedMessage());
+                    continue;
+                }
+            }
+            return false;
+        }else{
+            return false;
+        }
+    }
+    public boolean setLastUpdateTime(String bookAllChapterUrl,String time){
+        if(bookArray!=null){
+            for(int i=0; i<bookArray.length(); i++){
+                try{
+                    JSONObject temp = bookArray.getJSONObject(i);
+                    String tempURL = temp.optString("bookChapterURL");
+                    if(tempURL.equals(bookAllChapterUrl)){
+                        temp.put("bookLastUpdateTime", time);
+                        if(saveDataChange()){
+                            return true;
+                        }
+                        else
+                            return false;
+                    }
+                }catch (JSONException exp){
+                    Log.i("setLastUpdateTime: ", exp.getLocalizedMessage());
                     continue;
                 }
             }
