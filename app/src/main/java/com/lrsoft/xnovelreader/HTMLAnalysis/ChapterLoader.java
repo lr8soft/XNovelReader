@@ -11,6 +11,9 @@ import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListAdapter;
 import com.lrsoft.xnovelreader.TransmissionMiddleware.ChapterListItem;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ChapterLoader extends Thread {
@@ -48,6 +51,8 @@ public class ChapterLoader extends Thread {
             list = source.getChapterListFromSource(chapterURL,SourceAnalysis.WebSiteSource.Biquge);
         }else if(chapterURL.contains("dingdiann")){
             list = source.getChapterListFromSource(chapterURL,SourceAnalysis.WebSiteSource.Dingdiann);
+        }else if(chapterURL.contains("530p.com")){
+            list = source.getChapterListFromSource(chapterURL,SourceAnalysis.WebSiteSource.Zzzcn);
         }
         return list;
     }

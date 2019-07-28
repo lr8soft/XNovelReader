@@ -35,6 +35,8 @@ public class ArticleReader extends Thread{
             info = sourceAnalysis.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Biquge);
         }else  if(chapterURL.contains("dingdiann")){
             info = sourceAnalysis.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Dingdiann);
+        }else  if(chapterURL.contains("530p.com")){
+            info = sourceAnalysis.getArticleFromSource(chapterURL,SourceAnalysis.WebSiteSource.Zzzcn);
         }
         return info;
     }

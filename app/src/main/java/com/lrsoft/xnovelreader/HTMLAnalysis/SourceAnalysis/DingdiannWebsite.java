@@ -131,7 +131,7 @@ public class DingdiannWebsite implements IWebSource {
                     .replace("&nbsp;"," ")
                     .replace("<br>","\n")
                     .replace("<script>","")
-                    .replace("<script/>","");
+                    .replace("</script>","");
             if(!temp.equals("")){
                 chapterInfo+= temp;
             }

@@ -7,6 +7,8 @@ import android.widget.ArrayAdapter;
 
 import com.lrsoft.xnovelreader.HTMLAnalysis.SourceAnalysis.SourceAnalysis;
 import com.lrsoft.xnovelreader.TransmissionMiddleware.BookItem;
+
+import java.util.Comparator;
 import java.util.List;
 
 public class BookSearch extends Thread{
@@ -35,6 +37,17 @@ public class BookSearch extends Thread{
                     for(int i=0; i<list.size(); i++){
                         updateAdapter.add(list.get(i));
                     }
+                    updateAdapter.sort(new Comparator<BookItem>() {
+                        @Override
+                        public int compare(BookItem chapterListItem, BookItem t1) {
+                            if(t1.getBookName().length()>t1.getBookName().length()){
+                                return 1;
+                            }else if(t1.getBookName().length()<t1.getBookName().length()){
+                                return -1;
+                            }
+                            return 0;
+                        }
+                    });
                     updateAdapter.notifyDataSetChanged();
                     break;
                 case -1:
@@ -43,6 +56,17 @@ public class BookSearch extends Thread{
                 case 1:
                     BookItem item = (BookItem)msg.obj;
                     updateAdapter.add(item);
+                    updateAdapter.sort(new Comparator<BookItem>() {
+                        @Override
+                        public int compare(BookItem chapterListItem, BookItem t1) {
+                            if(t1.getBookName().length()>t1.getBookName().length()){
+                                return 1;
+                            }else if(t1.getBookName().length()<t1.getBookName().length()){
+                                return -1;
+                            }
+                            return 0;
+                        }
+                    });
                     updateAdapter.notifyDataSetChanged();
                     break;
             }

@@ -14,13 +14,15 @@ import java.util.Vector;
 public class SourceAnalysis {
     private BiqugeWebsite source_biquge = new BiqugeWebsite();
     private DingdiannWebsite source_dingdiann = new DingdiannWebsite();
+    private ZzzcnWebsite source_3zorg = new ZzzcnWebsite();
     private Vector<IWebSource> NovelSource = new Vector<>();
     public enum WebSiteSource{
-        Biquge, Dingdiann
+        Biquge, Dingdiann, Zzzcn
     };
     public SourceAnalysis(){
         NovelSource.add(source_dingdiann);
         NovelSource.add(source_biquge);
+        NovelSource.add(source_3zorg);
     }
     public List<BookItem> getBookFromAllSource(String bookName){
         List<BookItem> retBook = new ArrayList<>();
@@ -38,7 +40,7 @@ public class SourceAnalysis {
             if(isEmpty){
                 BookItem errorContainer = new BookItem();
                 errorContainer.setBookAuthor("N/A");
-                errorContainer.setBookName(NovelSource.get(i).getSourceName()+"没有搜索到结果！");
+                errorContainer.setBookName(NovelSource.get(i).getSourceName()+"无搜索结果！");
                 errorContainer.setBookChapterURL("");
                 Message msg = mHandler.obtainMessage(1, errorContainer);
                 msg.sendToTarget();
@@ -56,6 +58,9 @@ public class SourceAnalysis {
             case Dingdiann:
                 list = source_dingdiann.getChapterFromWebsites(bookURL);
                 break;
+            case Zzzcn:
+                list = source_3zorg.getChapterFromWebsites(bookURL);
+                break;
         }
         return list;
     }
@@ -67,6 +72,9 @@ public class SourceAnalysis {
                 break;
             case Dingdiann:
                 returnStr = source_dingdiann.getArticleFromWebsites(chapterURL);
+                break;
+            case Zzzcn:
+                returnStr = source_3zorg.getArticleFromWebsites(chapterURL);
                 break;
         }
         return returnStr;
