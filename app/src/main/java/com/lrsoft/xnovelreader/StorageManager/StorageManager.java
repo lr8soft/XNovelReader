@@ -90,6 +90,27 @@ public class StorageManager {
             return false;
         }
     }
+    public boolean removeFromBookList(BookItem bookItem){
+        if(isBookExisted(bookItem.getBookName(),bookItem.getBookChapterURL())){
+            if(bookArray!=null){
+                for(int i=0; i<bookArray.length(); i++){
+                    try{
+                        JSONObject temp = bookArray.getJSONObject(i);
+                        String tempName = temp.optString("bookName");
+                        String tempURL = temp.optString("bookChapterURL");
+                        if(tempName.equals(bookItem.getBookName()) && tempURL.equals(bookItem.getBookChapterURL())){
+                            bookArray.remove(i);
+                            if(saveDataChange())
+                                return true;
+                        }
+                    }catch (Exception expt){
+                        Log.e("removeFromBookList: ",expt.getLocalizedMessage());
+                    }
+                }
+            }
+        }
+        return false;
+    }
     public ChapterListItem getChapterLastReadByURL(String bookAllChapterUrl){
         ChapterListItem lastRead = null;
         if(bookArray!=null){

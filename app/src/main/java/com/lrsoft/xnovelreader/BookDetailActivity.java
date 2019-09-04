@@ -34,11 +34,11 @@ public class BookDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail_dialog);
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        if(chapterListAdapter==null){
-            chapterListAdapter = new ChapterListAdapter(BookDetailActivity.this,R.layout.chapter_item, storageChapterlist);
+        if (chapterListAdapter == null) {
+            chapterListAdapter = new ChapterListAdapter(BookDetailActivity.this, R.layout.chapter_item, storageChapterlist);
         }
         dialog = new AlertDialog.Builder(BookDetailActivity.this);
         onLayoutInit();
@@ -105,7 +105,11 @@ public class BookDetailActivity extends AppCompatActivity {
                 if(storageManager.addBookToList(temp)){
                     Toast.makeText(BookDetailActivity.this,"已添加到我的书架！",Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(BookDetailActivity.this,"无法添加到我的书架！",Toast.LENGTH_SHORT).show();
+                    if(storageManager.removeFromBookList(temp)){
+                        Toast.makeText(BookDetailActivity.this,"已从我的书架中删除！",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(BookDetailActivity.this,"无法从我的书架中删除本书！",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
